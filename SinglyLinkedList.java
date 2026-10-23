@@ -117,26 +117,85 @@ public class SinglyLinkedList implements LinkedList{
     @Override
     public Object get(int index) {
         // TODO digunakan untuk mengembalikan data pada index ke-i dimulai dari head. Head memiliki index 0
-        return null;
+        if (index < 0 || index >= size) {
+            return null;   
+        }
+        Node current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.pointer;
+        }
+        return current.data;
     }
     @Override
     public int indexOf(Object targetData) {
         // TODO digunakan mencari kemunculan pertama targetData pada linked list dan mengembalikan indeksnya. Indeks dari head adalah 0. Jika tidak ada targetData pada linked list, kembalikan nilai -1 
-        return 0;
+        Node current = head;
+        int index = 0;
+        while (current != null) {
+            if (current.data.equals(targetData)) {
+                return index;
+            }
+            current = current.pointer;
+            index++;
+        }
+        return -1;
     }
     @Override
     public void printReverse() {
         // TODO digunakan untuk mencetak data pada linked list dengan urutan terbalik, dari tail ke head.
-        
+        printReverseHelper(head);
+        System.out.println();
+    }
+    private void printReverseHelper(Node current) {
+        if (current == null) {
+            return;
+        }
+        printReverseHelper(current.pointer);
+        System.out.print(current.data + " ");
     }
     @Override
     public boolean remove(Object targetData) {
         // TODO digunakan untuk mencari dan menghapus node dengan data=targetData pada linked list serta mengembalikan nilai True jika berhasil, dan False jika targetData tidak ada di linkedList
-        return false;
+        if (head == null) {
+            return false;
+        }
+        if (head.data.equals(targetData)) {
+            head = head.pointer;
+            if (head == null) {
+                tail = null;
+            }
+            size--;
+            return true;
+        }
+    }
+    Node current = head;
+    while (current.pointer != null) {
+        if (current.pointer.data.equals(targetData)) {
+            current.pointer = current.pointer.pointer;
+            if (current.pointer == null) {
+                tail = current;
+            }
+            size--;
+            return true;
+        }
+        current = current.pointer;
     }
     @Override
     public Object[] toArray() {
         // TODO digunakan untuk mendapatkan keseluruhan data pada node-node di linked list dalam bentuk array. Data-data pada array disusun secara urut mulai dari head sampai dengan tail.
-        return null;
+        int count = 0;
+        Node current = head;
+        while (current != null) {
+            count++;
+            current = current.pointer;
+        }
+        Object[] result = new Object[count];
+        current = head;
+        int i = 0;
+        while (current != null) {
+            result[i++] = current.data;
+            current = current.pointer;
+        }
+        return result;
     }
 }
